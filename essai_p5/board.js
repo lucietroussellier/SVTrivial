@@ -4,13 +4,35 @@ class Board{
         this.list_case = []
         
         this.adj_case = []
-        this.player_position = []
         this.W = 800
         this.H = 400
         this.init()
         this.init_adj_case()
       }
-      
+
+    get_case_from(id_start_case, mvt_count, noreturn=0, res = []){
+        if( mvt_count==0){
+            res.push(id_start_case)
+            return
+        }
+        for (const el of this.adj_case[id_start_case]){ 
+            if (el != noreturn){
+                this.get_case_from(el, mvt_count-1,id_start_case, res = res)
+            }
+        }
+    }
+
+    highlight_possible_case(id_start_case, mvt_count){
+        var ids_possible_case=[]
+        this.get_case_from(id_start_case, mvt_count,0,ids_possible_case)
+        console.log(ids_possible_case)
+        for (const el of ids_possible_case){
+            this.list_case[el].animate_state = true
+            console.log("OAL",this.list_case[el].animate_state)
+        }
+        
+    }
+
     init_adj_case()
     {
         let adjcase =[]
@@ -120,6 +142,14 @@ class Case{
         this.position = position
         this.angle = angle
 
+        this.animate_state = false
+        this.anim_factor = true // true,on augmente, false on diminue
+        this.anim_cnt = 0
+    }
+    animate(){
+        if (this.anim_cnt==30) { this.anim_factor = false }
+        if (this.anim_cnt==0) { this.anim_factor = true }
+        this.anim_factor ? this.anim_cnt+=5 : this.anim_cnt-=5
         
     }
     
@@ -146,10 +176,14 @@ class CaseCamembert extends Case{
         let w = this.w
         let h = this.h
         push()
-        scale(1);
+       
         fill(getCatColor(this.category))
         translate(this.position[0],this.position[1])
         rotate(this.angle+PI/2);
+        if (this.animate_state){
+            this.animate()
+            scale(1+this.anim_cnt/100);
+        }
         beginShape();
         vertex(w/2, -h*30/64);
         vertex(0, -h/2);
@@ -187,10 +221,15 @@ class CaseNormale extends Case{
         let w = this.w
         let h = this.h
         push()
-        scale(1);
+        
+        
         fill(getCatColor(this.category))
         translate(this.position[0],this.position[1])
         rotate(this.angle+PI/2);
+        if (this.animate_state){
+            this.animate()
+            scale(1+this.anim_cnt/100);
+        }
         beginShape();
         vertex(w*10/18, -h*31/64);
         vertex(0, -h/2);
@@ -230,10 +269,14 @@ class CaseRect extends Case{
         let w = this.w
         let h = this.h
         push()
-        scale(1);
+        
         fill(getCatColor(this.category))
         translate(this.position[0],this.position[1])
         rotate(this.angle+PI/2);
+        if (this.animate_state){
+            this.animate()
+            scale(1+this.anim_cnt/100);
+        }
         beginShape();
         vertex(-w/2, -h/2);
         vertex(w/2, -h/2);
