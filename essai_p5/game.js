@@ -1,13 +1,13 @@
 class Game{
     constructor(){
-        this.nbJoueur = 1 // probable que ça deviennent un arg
+        
         this.state = State.DICE 
         this.dice = new Dice()
         this.board = new Board()
         this.board.resize(min(windowWidth,windowHeight))
+        
+        this.nbJoueur = 3 // probable que ça deviennent un arg
         this.crt_player = 0
-        
-        
         this.list_joueur = []
         for (let i = 0; i<this.nbJoueur ; i++){
             let plr = new Player(i)
@@ -56,12 +56,13 @@ class Game{
                     //print(this.board.list_case[i].position, mouseX,mouseY,mdist)
                     if (mdist < crt_min_dist) {index_min_dist = i; crt_min_dist = mdist} 
                 }
-                print(crt_min_dist)
+                //print(crt_min_dist)
                 if (crt_min_dist < 2000){
                     //console.log("la case la plus près : ", this.board.list_case[this.possible_case[index_min_dist]])
                     this.board.stop_higlight()
                     this.list_joueur[this.crt_player].move(this.board.list_case[this.possible_case[index_min_dist]])
                     this.state = State.DICE // pour les tests on revient en 1/ 
+                    this.crt_player = (this.crt_player+1)%this.nbJoueur
                 }
                 break;
 
