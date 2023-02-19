@@ -8,9 +8,11 @@ class Board{
         this.H = 400
         this.init()
         this.init_adj_case()
+
+        
       }
 
-    get_case_from(id_start_case, mvt_count, noreturn=0, res = []){
+    get_case_from(id_start_case, mvt_count, noreturn, res = []){
         if( mvt_count==0){
             res.push(id_start_case)
             return
@@ -21,15 +23,21 @@ class Board{
             }
         }
     }
-
+    stop_higlight(){
+        for (let el of this.list_case){
+            el.stop_animate()
+        }
+    }
     highlight_possible_case(id_start_case, mvt_count){
+
         var ids_possible_case=[]
-        this.get_case_from(id_start_case, mvt_count,0,ids_possible_case)
-        console.log(ids_possible_case)
+        this.get_case_from(id_start_case, mvt_count,-1,ids_possible_case)
+        //console.log(ids_possible_case)
         for (const el of ids_possible_case){
             this.list_case[el].animate_state = true
-            console.log("OAL",this.list_case[el].animate_state)
+            //console.log("OAL",this.list_case[el].animate_state)
         }
+        return ids_possible_case
         
     }
 
@@ -144,6 +152,11 @@ class Case{
 
         this.animate_state = false
         this.anim_factor = true // true,on augmente, false on diminue
+        this.anim_cnt = 0
+    }
+    stop_animate(){
+        this.animate_state = false
+        this.anim_factor = true
         this.anim_cnt = 0
     }
     animate(){

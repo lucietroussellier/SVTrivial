@@ -4,17 +4,19 @@ class Player{
         
         this.camenbert_list = [];
         this.position_id = 0 
+        this.position = [0,0]
         this.fr = 20
         this.r = 40
       }
       resize(mindim)
       {
           this.r = mindim/this.fr
-          
+          // position est mis à jour dans game 
       }
+
     draw(){
       push()
-      translate(200,200)
+      translate(this.position[0],this.position[1])
       
       strokeWeight(2);
       stroke(color('red'));
@@ -26,8 +28,9 @@ class Player{
       
     }
 
-    move(id_case) {
-        this.position_id = id_case
+    move(m_case) {
+        this.position_id = m_case.id
+        this.position = m_case.position
         
       }
 }

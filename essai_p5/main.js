@@ -7,33 +7,31 @@ function setup() {
   background(200)
   createCanvas(2000, 1000);
   frameRate(10);
-  p1 = new Player(1)
-  b= new Board()
-  b.resize(min(windowWidth,windowHeight))
+
+  g = new Game()
+
   //b.draw()
   //c1 = new Case(0,1,1,[200,100], PI/3)
   //c2 = new Case(0,Case_type.CAMEMBERT)
-
-
-  b.highlight_possible_case(4,3)
+  
+ 
 }
-// The statements in draw() are executed until the
-// program is stopped. Each statement is executed in
-// sequence and after the last line is read, the first
-// line is executed again.
 
 function draw() {
   clear()
-  b.draw()
-  p1.draw()
+  g.draw()
+
+  
 }
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
-  b.resize(min(windowWidth,windowHeight))
-  p1.resize(min(windowWidth,windowHeight))
+  g.resize()
+
 }
 
 
 function mousePressed() {
-    p1.move(p1.position_id+1)
+  g.mousePressed() 
+   //d.roll()
+    //p1.move(p1.position_id+1)
   }
