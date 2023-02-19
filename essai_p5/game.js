@@ -61,12 +61,23 @@ class Game{
                     //console.log("la case la plus près : ", this.board.list_case[this.possible_case[index_min_dist]])
                     this.board.stop_higlight()
                     this.list_joueur[this.crt_player].move(this.board.list_case[this.possible_case[index_min_dist]])
-                    this.state = State.DICE // pour les tests on revient en 1/ 
-                    this.crt_player = (this.crt_player+1)%this.nbJoueur
+                    
+                    if (this.board.list_case[this.possible_case[index_min_dist]].category==0){
+                        //on rejoue direct 
+                        this.state = State.DICE // pour les tests on revient en 1/ 
+                    
+                    }
+                    else{
+                        this.state = State.QUESTION // pour les tests on revient en 1/ 
+                    
+                    }
+                    
                 }
                 break;
 
             case State.QUESTION:
+                this.crt_player = (this.crt_player+1)%this.nbJoueur
+                this.state = State.DICE
                 break;
             case State.REPONSE:
                 break;
