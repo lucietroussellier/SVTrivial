@@ -14,7 +14,7 @@ function setup() {
   //c1 = new Case(0,1,1,[200,100], PI/3)
   //c2 = new Case(0,Case_type.CAMEMBERT)
   
- 
+  
 }
 
 function draw() {

@@ -19,7 +19,9 @@ class Game{
        
         this.possible_case = []
         
-
+        this.deck = new Deck()
+        this.deck_ready = false 
+        this.state = State.QUESTION
         
         // b.highlight_possible_case(4,3)
     }
@@ -32,12 +34,19 @@ class Game{
         
     }
     draw(){
-        
+        /*
+        console.log(this.deck.d);
+        if (!this.deck_ready){
+            this.deck_ready = true
+            this.deck.prepare()
+        }*/
         this.board.draw()
         for (const plr of this.list_joueur){
             plr.draw()
         } 
         this.dice.draw()
+
+        this.deck.draw()
     }
     mousePressed(){
         switch (this.state) {
@@ -76,10 +85,15 @@ class Game{
                 break;
 
             case State.QUESTION:
-                this.crt_player = (this.crt_player+1)%this.nbJoueur
-                this.state = State.DICE
+                this.deck.affiche_question = true
+                
                 break;
             case State.REPONSE:
+                this.affiche_question = false
+                this.affiche_reponse = true
+
+                this.crt_player = (this.crt_player+1)%this.nbJoueur
+                this.state = State.DICE
                 break;
             default:
                 console.log("Connait pas ce state")
