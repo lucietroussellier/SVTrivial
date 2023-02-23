@@ -22,11 +22,38 @@ class Game{
         this.deck = new Deck()
         this.deck_ready = false 
         //this.state = State.QUESTION
-        
+        const game_this = this
+        this.bonne_reponse_button = createButton('bonne réponse');
+        this.bonne_reponse_button.position(800, 80);
+        this.bonne_reponse_button.mousePressed(this.bonne_reponse.bind(this));
+        this.bonne_reponse_button.hide();
         // b.highlight_possible_case(4,3)
         
+        this.mauvaise_reponse_button = createButton('mauvaise réponse');
+        this.mauvaise_reponse_button.position(800, 100);
+        this.mauvaise_reponse_button.mousePressed(this.mauvaise_reponse.bind(this));
+        this.mauvaise_reponse_button.hide();
     }
-    
+    bonne_reponse(){
+        // ici .. on doit check si on gagne un camembert !
+        if(this.board.list_case[this.list_joueur[this.crt_player].position_id] instanceof CaseCamembert){
+
+           
+            let case_category = this.board.list_case[this.list_joueur[this.crt_player].position_id].category
+            //print("On gagne un camemebert", case_category)
+            if (!this.list_joueur[this.crt_player].camenbert_list.includes(case_category)){
+                //print(case_category)
+                this.list_joueur[this.crt_player].camenbert_list.push(case_category)
+                //print("dans game",this.list_joueur[this.crt_player].camenbert_list)
+            }
+        }
+        this.state = State.DICE
+
+    }
+    mauvaise_reponse(){
+        this.crt_player = (this.crt_player+1)%this.nbJoueur
+        this.state = State.DICE
+    }
 
     resize(){
         this.board.resize(min(windowWidth,windowHeight))
@@ -64,8 +91,8 @@ class Game{
                     //this.deck.list_card[this.deck.crt_index].affiche_question = false
                     //this.deck.list_card[this.deck.crt_index].affiche_reponse = true
                     this.state= State.REPONSE
-
-                    
+                    this.bonne_reponse_button.show()
+                    this.mauvaise_reponse_button.show()
                 }
             break
             case State.REPONSE:
@@ -78,6 +105,8 @@ class Game{
                     //this.deck.list_card[this.deck.crt_index].affiche_question = true
                     //this.deck.list_card[this.deck.crt_index].affiche_reponse = false
                     this.state= State.QUESTION
+                    this.bonne_reponse_button.hide()
+                    this.mauvaise_reponse_button.hide()
                 }
                 break
             
