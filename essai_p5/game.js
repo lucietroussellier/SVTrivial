@@ -21,10 +21,13 @@ class Game{
         
         this.deck = new Deck()
         this.deck_ready = false 
-        this.state = State.QUESTION
+        //this.state = State.QUESTION
         
         // b.highlight_possible_case(4,3)
+        
     }
+    
+
     resize(){
         this.board.resize(min(windowWidth,windowHeight))
         for (const plr of this.list_joueur){
@@ -45,8 +48,33 @@ class Game{
             plr.draw()
         } 
         this.dice.draw()
+        
 
-        this.deck.draw()
+        print("State", this.state)
+        switch (this.state) {
+            case State.QUESTION:
+                print(this.deck.list_card[this.deck.crt_index])
+                this.deck.list_card[this.deck.crt_index].draw()
+
+
+
+                if (this.deck.list_card[this.deck.crt_index].animate_done==true){
+                    this.deck.list_card[this.deck.crt_index].animate_done=false
+                    this.state= State.REPONSE
+
+                    
+                }
+            break
+            case State.REPONSE:
+                this.deck.list_card[this.deck.crt_index].draw()
+                //this.deck.list_card[this.deck.crt_index].draw()
+                this.deck.list_card[this.deck.crt_index].affiche_question = false
+                this.deck.list_card[this.deck.crt_index].affiche_reponse = true
+            
+                break
+            
+        }
+
     }
     mousePressed(){
         switch (this.state) {
@@ -85,12 +113,12 @@ class Game{
                 break;
 
             case State.QUESTION:
-                this.deck.affiche_question = true
+                this.deck.list_card[this.deck.crt_index].affiche_question = true
                 
+                    
                 break;
             case State.REPONSE:
-                this.affiche_question = false
-                this.affiche_reponse = true
+                this.deck.list_card[this.deck.crt_index].affiche_question = true
 
                 this.crt_player = (this.crt_player+1)%this.nbJoueur
                 this.state = State.DICE

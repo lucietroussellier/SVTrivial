@@ -4,19 +4,37 @@ class Card
         this.list_question = [] // 6 questions par cartes ..1 par catégorie
         this.niveau = 6 // par exemple pour 6eme => ça determinera la couleur du bord 
         this.color_list = [color('red'), color('yellow'), color('green'), color('blue'), color('orange'), color('brown'), color('black')]
+        this.animate = false
+        this.transistion_factor = 1 
+        
+        this.affiche_question = false
+        this.affiche_repoonse = false
+
+        const self = this; // Variable de référence pour l'objet Card
+        this.button = createButton('click me');
+        this.button.position(0, 0);
+        this.button.mousePressed(this.affiche_reponse);
+        
+        this.animate_done = false
+    }
+    affiche_reponse(){
+        self.animate = true
+        
     }
     draw()
     {
-        //fontbold = loadFont('assets/Bold.ttf')
-        //print("OLA", this.list_question)
-        //print(this.list_question[0])
-        //print(this.list_question[0][1])
-        let s = this.list_question[0][1]
-        //Pour les tests graphique minimaliste .. jsute la valeur
         push()
         // Les bords .. 
+        if (self.animate){
+            this.transistion_factor=this.transistion_factor-0.2
+            if ( this.transistion_factor<0 ){
+                self.animate= false
+                this.animate_done = true
+                this.transistion_factor = 1 
+            }
+        }
         let w =  max(windowWidth,windowHeight)/2
-        let h = min(windowWidth,windowHeight)/2
+        let h = this.transistion_factor * min(windowWidth,windowHeight)/2
         fill('orange')
         rect(0, 0, w, h, windowWidth/100);
         fill('white')
@@ -33,7 +51,11 @@ class Card
             
             fill(color('black'))
             //textFont(fontBold);
-            text(this.list_question[i-1][1], w/4+w/10,i*h/7+h/80)
+            let question_reponse = 0
+            if (this.affiche_question)
+            { question_reponse = 1}
+            else {question_reponse = 2}
+            text(this.list_question[i-1][question_reponse], w/4+w/10,i*h/7+h/80)
             if (i!=6){
                 stroke(220);
                 line(w/6, i*h/7+(1/2)*h/7, 5*w/6, i*h/7+(1/2)*h/7);
@@ -54,7 +76,8 @@ class Deck
         this.d = []
         this.createCards()  
         this.crt_index = 0  
-        this.affiche_question = false
+        
+
     }
     createCards(){
         var data = []
@@ -90,12 +113,7 @@ class Deck
         //print(this.list_card)
     }
     
-    draw(){
-        if  (this.affiche_question){
-            //print("on veut afficher la carte")
-            this.list_card[0].draw()
-        }
-    }
+    
 
 }
 
