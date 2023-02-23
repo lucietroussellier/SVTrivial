@@ -8,33 +8,60 @@ class Card
         this.transistion_factor = 1 
         
         this.affiche_question = false
-        this.affiche_repoonse = false
+        this.affiche_reponse = false
 
         const self = this; // Variable de référence pour l'objet Card
         this.button = createButton('click me');
         this.button.position(0, 0);
-        this.button.mousePressed(this.affiche_reponse);
+        this.button.mousePressed(this.toggle_card);
         
         this.animate_done = false
+        this.transistion_speed = -0.2
     }
-    affiche_reponse(){
+    toggle_card(){
+        //print("Click bouton pour retourner la carte")
         self.animate = true
         
+    }
+    toggle_affichage(){
+        if (this.affiche_question){
+            this.affiche_question = false
+            this.affiche_reponse = true
+        
+        }else{
+            this.affiche_question = true
+            this.affiche_reponse = false
+        }
+
     }
     draw()
     {
         push()
         // Les bords .. 
         if (self.animate){
-            this.transistion_factor=this.transistion_factor-0.2
-            if ( this.transistion_factor<0 ){
+            
+            this.transistion_factor=this.transistion_factor+this.transistion_speed
+           
+            if ( this.transistion_factor < 0 ){
+                this.transistion_speed = -this.transistion_speed
+                this.toggle_affichage()
+                //print(this.affiche_question)
+            }
+            else if (this.transistion_factor>1){
                 self.animate= false
                 this.animate_done = true
+                
                 this.transistion_factor = 1 
+                this.transistion_speed = -this.transistion_speed
+                
+            }
+            else{
+                translate(0,(1-this.transistion_factor)*0.5*min(windowWidth,windowHeight)/2)
             }
         }
         let w =  max(windowWidth,windowHeight)/2
         let h = this.transistion_factor * min(windowWidth,windowHeight)/2
+        
         fill('orange')
         rect(0, 0, w, h, windowWidth/100);
         fill('white')
@@ -53,8 +80,11 @@ class Card
             //textFont(fontBold);
             let question_reponse = 0
             if (this.affiche_question)
-            { question_reponse = 1}
+            { question_reponse = 1
+            
+            }
             else {question_reponse = 2}
+            //print(this.transistion_factor , question_reponse)
             text(this.list_question[i-1][question_reponse], w/4+w/10,i*h/7+h/80)
             if (i!=6){
                 stroke(220);

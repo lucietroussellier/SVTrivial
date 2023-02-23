@@ -50,16 +50,19 @@ class Game{
         this.dice.draw()
         
 
-        print("State", this.state)
+        //print("State", this.state)
         switch (this.state) {
             case State.QUESTION:
-                print(this.deck.list_card[this.deck.crt_index])
+                //print(this.deck.list_card[this.deck.crt_index])
                 this.deck.list_card[this.deck.crt_index].draw()
 
-
+                //this.deck.list_card[this.deck.crt_index].affiche_question = true
+                //this.deck.list_card[this.deck.crt_index].affiche_reponse = false
 
                 if (this.deck.list_card[this.deck.crt_index].animate_done==true){
                     this.deck.list_card[this.deck.crt_index].animate_done=false
+                    //this.deck.list_card[this.deck.crt_index].affiche_question = false
+                    //this.deck.list_card[this.deck.crt_index].affiche_reponse = true
                     this.state= State.REPONSE
 
                     
@@ -68,9 +71,14 @@ class Game{
             case State.REPONSE:
                 this.deck.list_card[this.deck.crt_index].draw()
                 //this.deck.list_card[this.deck.crt_index].draw()
-                this.deck.list_card[this.deck.crt_index].affiche_question = false
-                this.deck.list_card[this.deck.crt_index].affiche_reponse = true
-            
+                //this.deck.list_card[this.deck.crt_index].affiche_question = false
+                //this.deck.list_card[this.deck.crt_index].affiche_reponse = true
+                if (this.deck.list_card[this.deck.crt_index].animate_done==true){
+                    this.deck.list_card[this.deck.crt_index].animate_done=false
+                    //this.deck.list_card[this.deck.crt_index].affiche_question = true
+                    //this.deck.list_card[this.deck.crt_index].affiche_reponse = false
+                    this.state= State.QUESTION
+                }
                 break
             
         }
@@ -101,27 +109,32 @@ class Game{
                     
                     if (this.board.list_case[this.possible_case[index_min_dist]].category==0){
                         //on rejoue direct 
-                        this.state = State.DICE // pour les tests on revient en 1/ 
+                        this.state = State.DICE  
                     
                     }
                     else{
-                        this.state = State.QUESTION // pour les tests on revient en 1/ 
-                    
+                        this.deck.list_card[this.deck.crt_index].affiche_question= true
+                        this.deck.list_card[this.deck.crt_index].animate = true
+                        this.deck.list_card[this.deck.crt_index].animate_done = false
+                        this.state = State.QUESTION 
+                        
                     }
                     
                 }
                 break;
 
             case State.QUESTION:
-                this.deck.list_card[this.deck.crt_index].affiche_question = true
-                
+                // on a cliqué alors qu'on est en state QUESTION .. on veut donc afficher les reponses 
+                //print("click en state QUESTION")
+                //this.deck.list_card[this.deck.crt_index].affiche_reponse = true
+                //this.deck.list_card[this.deck.crt_index].affiche_question = false
                     
                 break;
             case State.REPONSE:
-                this.deck.list_card[this.deck.crt_index].affiche_question = true
-
-                this.crt_player = (this.crt_player+1)%this.nbJoueur
-                this.state = State.DICE
+                //this.deck.list_card[this.deck.crt_index].affiche_question = true
+                //print("click en state REPONSE")
+                //this.crt_player = (this.crt_player+1)%this.nbJoueur
+                //this.state = State.DICE
                 break;
             default:
                 console.log("Connait pas ce state")
