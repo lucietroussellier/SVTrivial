@@ -109,7 +109,10 @@ class Game{
                     this.mauvaise_reponse_button.hide()
                 }
                 break
-            
+            default:
+                this.bonne_reponse_button.hide()
+                this.mauvaise_reponse_button.hide()
+                break
         }
 
     }
