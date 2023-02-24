@@ -322,6 +322,10 @@ class CaseCentre extends Case{
         fill(200)
         translate(this.position[0],this.position[1])
         beginShape();
+        if (this.animate_state){
+            this.animate()
+            scale(1+this.anim_cnt/100);
+        }
         vertex(r, 0);
         vertex(r*cos(PI/3), r*sin(PI/3));
         vertex(r*cos(2*PI/3), r*sin(2*PI/3));
