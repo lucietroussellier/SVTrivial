@@ -47,6 +47,12 @@ class Game{
                 //print("dans game",this.list_joueur[this.crt_player].camenbert_list)
             }
         }
+        if(this.board.list_case[this.list_joueur[this.crt_player].position_id] instanceof CaseCentre){
+            if( this.list_joueur[this.crt_player].camenbert_list.length==6){
+                print(this.list_joueur[this.crt_player].id, "WIN THE GAME !")
+                this.state = State.END
+            }
+        }
         this.state = State.DICE
 
     }
@@ -79,6 +85,9 @@ class Game{
 
         //print("State", this.state)
         switch (this.state) {
+            case State.END:
+                // TODO esthetique    
+            break
             case State.QUESTION:
                 //print(this.deck.list_card[this.deck.crt_index])
                 this.deck.list_card[this.deck.crt_index].draw()
@@ -143,8 +152,18 @@ class Game{
                         //on rejoue direct 
                         this.state = State.DICE  
                     
-                    }
+                    } 
                     else{
+                        /*if (this.board.list_case[this.possible_case[index_min_dist]] instanceof CaseCentre) {
+                            print("on est au centre ")
+                            if (this.list_joueur[this.crt_player].camenbert_list.length==6){
+                                print("tentative de win avec 4 bonnes reponses sur 6")
+                                //this.state = State.WINTRY  
+                            } else
+                            {
+                                print("on choisit la couleur")
+                            }
+                         }*/
                         this.deck.list_card[this.deck.crt_index].affiche_question= true
                         this.deck.list_card[this.deck.crt_index].animate = true
                         this.deck.list_card[this.deck.crt_index].animate_done = false
@@ -185,8 +204,10 @@ vrai/faux => retour en 1 avec le bon num de joueur
 
 const State = {
     DICE: 0,
-    MOVE: 1,
+    MOVE: 1, 
     QUESTION: 2,
-    REPONSE: 3
+    REPONSE: 3,
+    END: 4
+    //WINTRY : 4
 
 }
